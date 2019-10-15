@@ -7,7 +7,16 @@ class CPU:
 
     def __init__(self):
         """Construct a new CPU."""
-        pass
+
+    def ram_read(self, MAR)
+        # should find and return value at given address in memory
+        # _Memory Address Register_ (MAR)
+        return self.ram[MAR]
+
+    def ram_write(self, MAR, MDR):
+        # should find info at given address in memory and write/overwrite it
+        # _Memory Data Register_ (MDR)
+        self.ram[MAR] = MDR
 
     def load(self):
         """Load a program into memory."""
