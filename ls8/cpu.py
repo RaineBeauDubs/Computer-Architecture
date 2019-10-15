@@ -10,6 +10,7 @@ class CPU:
         self.ram = [0] * 256
         self.reg = [0] * 8
         self.pc = 0
+        self.SP = 0x07
 
     def ram_read(self, MAR):
         # should find and return value at given address in memory
@@ -106,6 +107,14 @@ class CPU:
             elif IR == MUL:
                 self.alu("MUL", operand_a, operand_b)
                 self.pc += 3
+            elif IR == PUSH:
+                self.SP -= 1
+                self.ram[self.SP] = self.reg[operand_a]
+                self.pc += 2
+            elif IR == POP:
+                self.reg[operand_a] = self.ram[self.SP]
+                self.SP += 1
+                self.pc += 2
             else:
                 print("Halting the program")
                 running = False
