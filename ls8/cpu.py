@@ -89,6 +89,9 @@ class CPU:
         PUSH = 0b01000101 
         POP  = 0b01000110 
         MUL  = 0b10100010
+        CALL = 0b01010000
+        RET = 0b00010001
+        ADD = 0b10100000
         running = True
         while running:
             # the _Instruction Register_, local variable
@@ -107,6 +110,9 @@ class CPU:
             elif IR == MUL:
                 self.alu("MUL", operand_a, operand_b)
                 self.pc += 3
+            elif IR == ADD:
+                self.alu("ADD", operand_a, operand_b)
+                self.pc += 3
             elif IR == PUSH:
                 self.SP -= 1
                 self.ram[self.SP] = self.reg[operand_a]
@@ -115,6 +121,15 @@ class CPU:
                 self.reg[operand_a] = self.ram[self.SP]
                 self.SP += 1
                 self.pc += 2
+            elif IR == CALL:
+                ret_add = self.pc + 2
+                self.reg[self.SP] -= 1
+                self.ram[self.reg[self.SP]] = ret_add
+                self.pc = self.reg[operand_a]
+            elif IR == RET:
+                ret_add = self.ram[self.reg[self.SP]]
+                self.reg[self.SP] += 1
+                self.pc = ret_add
             else:
                 print("Halting the program")
                 running = False
